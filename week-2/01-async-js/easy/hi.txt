@@ -1,0 +1,1 @@
+Hey Man, It's async and promise. Don't be sync with these promise.
