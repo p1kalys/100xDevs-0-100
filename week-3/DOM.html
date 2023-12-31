@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+</head>
+<script>
+    function calc(){
+        const p = document.getElementById("principal");
+        const r = document.getElementById("rate");
+        const t = document.getElementById("time");
+
+        fetch("https://sum-server.100xdevs.com/interest?principal="+p+"&rate="+r+"&time="+t).then(function(response){
+            response.text().then(function(ans){
+                document.getElementById("interest").innerHTML = ans;
+            })
+        })
+    };
+</script>
+<body>
+    <input id="principal" type="text" placeholder="Principal Amount" /><br>
+    <input id="rate" type="text" placeholder="Principal Amount" /><br>
+    <input id="time" type="text" placeholder="Principal Amount" /><br>
+    <button onclick="calc()">Calculate Interest</button><br>
+    <div id="interest"></div>
+</body>
+</html>
