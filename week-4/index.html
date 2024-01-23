@@ -1,22 +1,41 @@
 <!DOCTYPE html>
 <html>
+<head></head>
+<body>
+  <input type="text" id="title" placeholder="Todo title" /> <br /><br />
+  <input type="text" id="description" placeholder="Todo description" /> <br /><br />
+  <button onclick="addTodo()">Add todo</button>
+  <br /> <br />
 
-<head>
+  <div id="todos"> </div>
   <script>
+    const todosE1 = document.querySelector("#todos");
     let globalId = 1;
     let todoState = [];
     let oldTodoState = [];
 
-    function addTodoToDom() {
-      
+    function addTodoToDom(todo) {
+      const todoE1 = document.createElement("div");
+      const title = document.createElement("h2");
+      title.innerHTML = todo.title;
+      const description = document.createElement("p");
+      description.innerHTML = todo.description;
+      todoE1.appendChild(title);
+      todoE1.appendChild(description);
+      todoE1.setAttribute("id", String(todo.id));
+      todosE1.appendChild(todoE1);
     }
 
     function removeTodoFromDom(todo) {
-      
+      const deleteElement = document.getElementById(String(todo.id));
+      todos.removeChild(deleteElement);
     }
 
     function updateTodoInDom(oldTodo, newTodo) {
-        
+        const updateElement = document.getElementById(String(oldTodo.id));
+        const Child = updateElement.children;
+        Child[0].innerHTML = newTodo.title;
+        Child[1].innerHTML = newTodo.description;
     }
 
     function updateState(newTodos) {
@@ -31,7 +50,31 @@
       // calculate these 3 arrays
       // call addTodo, removeTodo, updateTodo functions on each of the
       // elements
-      oldTodoState = newTodos;
+      const oldTodoMap = new Map();
+      for (let i = 0; i < oldTodoState.length; i++) {
+        oldTodoMap.set(oldTodoState[i].id, oldTodoState[i]);
+      }
+
+      for(let i = 0; i < newTodos.length; i++){
+        if (oldTodoMap.get(newTodos[i].id) === undefined) {
+          added.push(newTodos[i]);
+        } else {
+          if (oldTodoMap.get(newTodos[i].id).title !== newTodos[i].title) {
+            updated.push([oldTodoMap.get(newTodos[i].id), newTodos[i]]);
+          }
+          oldTodoMap.delete(newTodos[i].id);
+        }
+      }
+
+      for (const [id,todo] of oldTodoMap) {
+        deleted.push(todo);
+      }
+
+      deleted.forEach((todo) => removeTodoFromDom(todo));
+      updated.forEach((oldAndNewTodo) => updateTodoInDom(...oldAndNewTodo));
+      added.forEach((todo) => addTodoToDom(todo));
+
+      oldTodoState = [...newTodos];
     }
 
     function addTodo() {
@@ -45,17 +88,8 @@
       updateState(todoState);
     }
   </script>
-</head>
 
-<body>
-  <input type="text" id="title" placeholder="Todo title"></input> <br /><br />
-  <input type="text" id="description" placeholder="Todo description"></input> <br /><br />
-  <button onclick="addTodo()">Add todo</button>
-  <br /> <br />
 
-  <div id="todos">
-
-  </div>
 </body>
 
 </html>
