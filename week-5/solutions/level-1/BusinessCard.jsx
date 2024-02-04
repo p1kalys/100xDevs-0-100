@@ -10,7 +10,7 @@ export function BusinessCard(props) {
               {interest}
             </li>
           ))}
-        </ul>
+        </ul> 
         <div style={styles.socialLinks}>
           <a href={props.linkedin} target="_blank" rel="noopener noreferrer" style={{...styles.link, marginLeft: '0px'}}>
             LinkedIn
